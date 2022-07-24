@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import os
+import json
+from base64 import b64encode, b64decode
 from flask import Flask, request
 
 from pymxs import runtime as rt
@@ -18,6 +20,17 @@ def createFileFolder(file_path):
     file_folder_path = file_path.split(file_name)[0]
     os.makedirs(file_folder_path, exist_ok=True)
     return True
+
+def getBase64Data(file_path):
+    if not os.path.exists(file_path):
+        print("[ERROR][demo::getBase64Data]")
+        print("\t file not exist!")
+        return None
+
+    with open(file_path, 'rb') as f:
+        file_data = f.read()
+        base64_data = b64encode(file_data).decode().encode('utf-8')
+        return base64_data
 
 class MaxObjExp(object):
     def __init__(self):
@@ -90,41 +103,53 @@ class MaxObjExp(object):
         print(rt.maxFileName)
         return True
 
-    def startServer(self, port):
+    def startServer(self, port, route, tmp_save_folder_path):
         app = Flask(__name__)
 
-        tmp_save_max_file_path = "D:/tmp/tmp.max"
-        tmp_save_obj_file_path = "D:/tmp/tmp.obj"
+        if tmp_save_folder_path[-1] != "/":
+            tmp_save_folder_path += "/"
+        os.makedirs(tmp_save_folder_path, exist_ok=True)
 
-        createFileFolder(tmp_save_max_file_path)
-        createFileFolder(tmp_save_obj_file_path)
+        tmp_save_max_file_path = tmp_save_folder_path + "tmp.max"
+        tmp_save_obj_file_path = tmp_save_folder_path + "tmp.obj"
 
-        @app.route('/transToObj', methods=['POST'])
+        @app.route('/' + route, methods=['POST'])
         def transToObj():
             removeIfExist(tmp_save_max_file_path)
             removeIfExist(tmp_save_obj_file_path)
 
-            ff = request.files['max_file']
-            ff.save(tmp_save_max_file_path)
+            data = request.get_data()
+            data = json.loads(data)
+            max_file_base64_data = data['max_file']
+            max_file_data = b64decode(max_file_base64_data)
+            with open(tmp_save_max_file_path, 'wb') as f:
+                f.write(max_file_data)
 
-            result = {
-                'code': 200,
-                'state': 'failure',
-                'obj_file': None,
-            }
+            result = {'obj_file': None}
+
+            with open(tmp_save_folder_path + "debug.txt", "a") as f:
+                f.write("finish save max file\n")
 
             if not self.transToObj(tmp_save_max_file_path, tmp_save_obj_file_path):
                 print("[ERROR][MaxObjExp::startServer]")
                 print("\t transToObj failed!")
-                with open("D:/tmp/debug.txt", "a") as f:
-                    f.write("transToObj failed!\n")
-                return result
 
-            result['state'] = 'success'
-            result['obj_file'] = open(tmp_save_obj_file_path, 'rb')
-            with open("D:/tmp/debug.txt", "a") as f:
-                f.write("transToObj success!\n")
-            return result
+                with open(tmp_save_folder_path + "debug.txt", "a") as f:
+                    f.write("fail transToObj!!!!!!!!!!!!\n")
+
+                return json.dumps(result, ensure_ascii=False)
+
+            with open(tmp_save_folder_path + "debug.txt", "a") as f:
+                f.write("finish transToObj\n")
+
+            obj_file_data = getBase64Data(tmp_save_obj_file_path)
+            if obj_file_data is None:
+                print("[ERROR]")
+                print("\t getBase64Data failed!")
+                return json.dumps(result, ensure_ascii=False)
+
+            result['obj_file'] = obj_file_data.decode('utf-8')
+            return json.dumps(result, ensure_ascii=False)
 
         app.run(port=port, host='0.0.0.0')
         return True
@@ -140,8 +165,12 @@ def demo():
     return True
 
 def demo_flask():
+    port = 9360
+    route = "transToObj"
+    tmp_save_folder_path = "D:/tmp/"
+
     max_obj_exp = MaxObjExp()
-    max_obj_exp.startServer(9360)
+    max_obj_exp.startServer(port, route, tmp_save_folder_path)
     return True
 
 if __name__ == "__main__":
