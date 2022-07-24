@@ -7,7 +7,11 @@ def removeIfExist(file_path):
     if not os.path.exists(file_path):
         return True
 
-    os.remove(file_path)
+    while os.path.exists(file_path):
+        try:
+            os.remove(file_path)
+        except:
+            continue
     return True
 
 def createFileFolder(file_path):
@@ -15,5 +19,4 @@ def createFileFolder(file_path):
     file_folder_path = file_path.split(file_name)[0]
     os.makedirs(file_folder_path, exist_ok=True)
     return True
-
 
