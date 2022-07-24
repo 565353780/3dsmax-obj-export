@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import json
 import requests
 
@@ -68,6 +67,7 @@ def demo():
     server_ip = "192.168.2.16"
     server_port = 9360
     server_route = "transToObj"
+
     #  max_file_path = "C:/Program Files/Autodesk/3ds Max 2023/presets/Particle Flow/earth_Squib Sand01.max"
     max_file_path = "/home/chli/chLi/tmp.max"
     save_obj_file_path = "/home/chli/chLi/test.obj"
