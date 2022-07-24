@@ -82,7 +82,7 @@ def demo():
     @app.route('/stop', methods=['POST'])
     def stop():
         sendSignal(stop_signal_file_path)
-        return 'stop signal send finished!'
+        exit()
 
     app.run('0.0.0.0', port)
     return True
