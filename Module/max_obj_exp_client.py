@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import json
 import requests
 
@@ -49,9 +50,17 @@ class MaxObjExpClient(object):
 
         createFileFolder(save_obj_file_path)
         removeIfExist(save_obj_file_path)
+        save_mtl_file_path = save_obj_file_path.replace(".obj", ".mtl")
+        removeIfExist(save_mtl_file_path)
         obj_file_data = getDecodeData(obj_file_base64_data)
         with open(save_obj_file_path, 'wb') as f:
             f.write(obj_file_data)
+
+        mtl_file_base64_data = result['mtl_file']
+        if mtl_file_base64_data is not None:
+            mtl_file_data = getDecodeData(mtl_file_base64_data)
+            with open(save_mtl_file_path, "wb") as f:
+                f.write(mtl_file_data)
         return True
 
 def demo():

@@ -25,6 +25,7 @@ def demo():
 
     tmp_save_max_file_path = tmp_save_folder_path + "tmp.max"
     tmp_save_obj_file_path = tmp_save_folder_path + "tmp.obj"
+    tmp_save_mtl_file_path = tmp_save_folder_path + "tmp.mtl"
 
     max_copy_finished_signal_file_path = tmp_save_folder_path + max_copy_finished_signal
     obj_trans_finished_signal_file_path = tmp_save_folder_path + obj_trans_finished_signal
@@ -35,6 +36,7 @@ def demo():
         removeIfExist(tmp_save_max_file_path)
         removeIfExist(max_copy_finished_signal_file_path)
         removeIfExist(tmp_save_obj_file_path)
+        removeIfExist(tmp_save_mtl_file_path)
         removeIfExist(obj_trans_finished_signal_file_path)
 
         data = request.get_data()
@@ -47,7 +49,7 @@ def demo():
 
         sendSignal(max_copy_finished_signal_file_path)
 
-        result = {'obj_file': None}
+        result = {'obj_file': None, 'mtl_file': None}
 
         data = getSignal(obj_trans_finished_signal_file_path)
         if not os.path.exists(tmp_save_obj_file_path):
@@ -60,8 +62,12 @@ def demo():
             print("[ERROR]")
             print("\t getBase64Data failed!")
             return json.dumps(result, ensure_ascii=False)
-
         result['obj_file'] = obj_file_data
+
+        if os.path.exists(tmp_save_mtl_file_path):
+            mtl_file_data = getBase64Data(tmp_save_mtl_file_path)
+            if mtl_file_data is not None:
+                result['mtl_file'] = mtl_file_data
         return json.dumps(result, ensure_ascii=False)
 
     @app.route('/stop', methods=['POST'])
