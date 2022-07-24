@@ -17,14 +17,14 @@ class MaxObjExpClient(object):
         self.url = "http://" + self.server_ip + ":" + str(self.server_port) + "/" + self.server_route
         return
 
-    def getPostResult(self, max_file_path):
+    def getPostResult(self, max_file_path, obj_file_basename):
         max_file_data = getBase64Data(max_file_path)
         if max_file_data is None:
             print("[ERROR][MaxObjExpClient::getPostResult]")
             print("\t getBase64Data failed!")
             return None
 
-        data = {'max_file': max_file_data}
+        data = {'max_file': max_file_data, 'obj_file_basename': obj_file_basename}
         result = requests.post(self.url, data=json.dumps(data)).text
         try:
             result_json = json.loads(result)
@@ -36,7 +36,8 @@ class MaxObjExpClient(object):
         return result_json
 
     def transToObj(self, max_file_path, save_obj_file_path):
-        result = self.getPostResult(max_file_path)
+        obj_file_basename = save_obj_file_path.split("/")[-1].split(".")[0]
+        result = self.getPostResult(max_file_path, obj_file_basename)
         if result is None:
             print("[ERROR][MaxObjExpClient::transToObj]")
             print("\t getPostResult failed!")

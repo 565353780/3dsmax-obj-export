@@ -23,24 +23,27 @@ def demo():
         tmp_save_folder_path += "/"
     os.makedirs(tmp_save_folder_path, exist_ok=True)
 
-    tmp_save_max_file_path = tmp_save_folder_path + "tmp.max"
-    tmp_save_obj_file_path = tmp_save_folder_path + "tmp.obj"
-    tmp_save_mtl_file_path = tmp_save_folder_path + "tmp.mtl"
-
     max_copy_finished_signal_file_path = tmp_save_folder_path + max_copy_finished_signal
     obj_trans_finished_signal_file_path = tmp_save_folder_path + obj_trans_finished_signal
     stop_signal_file_path = tmp_save_folder_path + stop_signal
 
     @app.route('/' + route, methods=['POST'])
     def transToObj():
+        data = request.get_data()
+        data = json.loads(data)
+
+        obj_file_basename = data['obj_file_basename']
+        tmp_save_file_basepath = tmp_save_folder_path + obj_file_basename
+        tmp_save_max_file_path = tmp_save_file_basepath + ".max"
+        tmp_save_obj_file_path = tmp_save_file_basepath + ".obj"
+        tmp_save_mtl_file_path = tmp_save_file_basepath + ".mtl"
+
         removeIfExist(tmp_save_max_file_path)
         removeIfExist(max_copy_finished_signal_file_path)
         removeIfExist(tmp_save_obj_file_path)
         removeIfExist(tmp_save_mtl_file_path)
         removeIfExist(obj_trans_finished_signal_file_path)
 
-        data = request.get_data()
-        data = json.loads(data)
         max_file_base64_data = data['max_file']
         max_file_data = getDecodeData(max_file_base64_data)
 
