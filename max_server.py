@@ -182,6 +182,10 @@ def demo_io():
     stop_signal_file_path = tmp_save_folder_path + stop_signal
 
     while True:
+        if os.path.exists(stop_signal_file_path):
+            removeIfExist(stop_signal_file_path)
+            break
+
         if not os.path.exists(max_copy_finished_signal_file_path):
             continue
 
@@ -207,10 +211,6 @@ def demo_io():
         removeIfExist(tmp_save_max_file_path)
         with open(obj_trans_finished_signal_file_path, "w") as f:
             f.write("1")
-
-        if os.path.exists(stop_signal_file_path):
-            removeIfExist(stop_signal_file_path)
-            break
     return True
 
 if __name__ == "__main__":
