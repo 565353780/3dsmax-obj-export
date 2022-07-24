@@ -147,20 +147,10 @@ def demo_flask():
 
         result = {'obj_file': None}
 
-        with open(tmp_save_folder_path + "debug.txt", "a") as f:
-            f.write("finish save max file\n")
-
         if not max_obj_exp.transToObj(tmp_save_max_file_path, tmp_save_obj_file_path):
-            print("[ERROR][MaxObjExp::startServer]")
+            print("[ERROR][demo_flask::transToObj]")
             print("\t transToObj failed!")
-
-            with open(tmp_save_folder_path + "debug.txt", "a") as f:
-                f.write("fail transToObj!!!!!!!!!!!!\n")
-
             return json.dumps(result, ensure_ascii=False)
-
-        with open(tmp_save_folder_path + "debug.txt", "a") as f:
-            f.write("finish transToObj\n")
 
         obj_file_data = getBase64Data(tmp_save_obj_file_path)
         if obj_file_data is None:
@@ -176,6 +166,42 @@ def demo_flask():
     return True
 
 def demo_io():
+    tmp_save_folder_path = "D:/tmp/"
+    max_copy_finished_signal = "max_copy_finished.txt"
+    obj_trans_finished_signal = "obj_trans_finished.txt"
+    stop_signal = "stop.txt"
+
+    max_obj_exp = MaxObjExp()
+
+    if tmp_save_folder_path[-1] != "/":
+        tmp_save_folder_path += "/"
+    os.makedirs(tmp_save_folder_path, exist_ok=True)
+
+    tmp_save_max_file_path = tmp_save_folder_path + "tmp.max"
+    tmp_save_obj_file_path = tmp_save_folder_path + "tmp.obj"
+
+    max_copy_finished_signal_file_path = tmp_save_folder_path + max_copy_finished_signal
+    obj_trans_finished_signal_file_path = tmp_save_folder_path + obj_trans_finished_signal
+    stop_signal_file_path = tmp_save_folder_path + stop_signal
+
+    while True:
+        if not os.path.exists(max_copy_finished_signal_file_path):
+            continue
+
+        removeIfExist(max_copy_finished_signal_file_path)
+        removeIfExist(tmp_save_obj_file_path)
+
+        if not max_obj_exp.transToObj(tmp_save_max_file_path, tmp_save_obj_file_path):
+            print("[ERROR][MaxObjExp::startServer]")
+            print("\t transToObj failed!")
+
+        removeIfExist(tmp_save_max_file_path)
+        with open(obj_trans_finished_signal_file_path, "w") as f:
+            f.write("1")
+
+        if os.path.exists(stop_signal_file_path):
+            removeIfExist(stop_signal_file_path)
+            break
     return True
 
 if __name__ == "__main__":
