@@ -36,7 +36,7 @@ class MaxObjExpClient(object):
         return result_json
 
     def transToObj(self, max_file_path, save_obj_file_path):
-        obj_file_basename = save_obj_file_path.split("/")[-1].split(".")[0]
+        obj_file_basename = save_obj_file_path.split("/")[-1].split(".obj")[0]
         result = self.getPostResult(max_file_path, obj_file_basename)
         if result is None:
             print("[ERROR][MaxObjExpClient::transToObj]")
