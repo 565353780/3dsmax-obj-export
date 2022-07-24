@@ -177,9 +177,6 @@ def demo_io():
         tmp_save_folder_path += "/"
     os.makedirs(tmp_save_folder_path, exist_ok=True)
 
-    tmp_save_max_file_path = tmp_save_folder_path + "tmp.max"
-    tmp_save_obj_file_path = tmp_save_folder_path + "tmp.obj"
-
     max_copy_finished_signal_file_path = tmp_save_folder_path + max_copy_finished_signal
     obj_trans_finished_signal_file_path = tmp_save_folder_path + obj_trans_finished_signal
     stop_signal_file_path = tmp_save_folder_path + stop_signal
@@ -187,6 +184,18 @@ def demo_io():
     while True:
         if not os.path.exists(max_copy_finished_signal_file_path):
             continue
+
+        tmp_save_max_file_path = tmp_save_folder_path + "tmp.max"
+        tmp_save_obj_file_path = tmp_save_folder_path + "tmp.obj"
+
+        file_name_list = os.listdir(tmp_save_folder_path)
+        for file_name in file_name_list:
+            if file_name[-4:] != ".max":
+                continue
+            file_basename = file_name.split(".max")[0]
+            tmp_save_max_file_path = tmp_save_folder_path + file_basename + ".max"
+            tmp_save_obj_file_path = tmp_save_folder_path + file_basename + ".obj"
+            break
 
         removeIfExist(max_copy_finished_signal_file_path)
         removeIfExist(tmp_save_obj_file_path)
