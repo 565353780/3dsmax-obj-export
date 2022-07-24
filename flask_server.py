@@ -61,7 +61,7 @@ def demo():
             print("\t getBase64Data failed!")
             return json.dumps(result, ensure_ascii=False)
 
-        result['obj_file'] = obj_file_data.decode('utf-8')
+        result['obj_file'] = obj_file_data
         return json.dumps(result, ensure_ascii=False)
 
     @app.route('/stop', methods=['POST'])
