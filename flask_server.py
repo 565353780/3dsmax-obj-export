@@ -54,16 +54,20 @@ def demo():
 
         result = {'obj_file': None, 'mtl_file': None}
 
-        data = getSignal(obj_trans_finished_signal_file_path)
+        getSignal(obj_trans_finished_signal_file_path)
         if not os.path.exists(tmp_save_obj_file_path):
             print("[ERROR][demo::transToObj]")
             print("\t transToObj failed!")
+            removeIfExist(tmp_save_obj_file_path)
+            removeIfExist(tmp_save_mtl_file_path)
             return json.dumps(result, ensure_ascii=False)
 
         obj_file_data = getBase64Data(tmp_save_obj_file_path)
         if obj_file_data is None:
             print("[ERROR]")
             print("\t getBase64Data failed!")
+            removeIfExist(tmp_save_obj_file_path)
+            removeIfExist(tmp_save_mtl_file_path)
             return json.dumps(result, ensure_ascii=False)
         result['obj_file'] = obj_file_data
 
@@ -71,6 +75,8 @@ def demo():
             mtl_file_data = getBase64Data(tmp_save_mtl_file_path)
             if mtl_file_data is not None:
                 result['mtl_file'] = mtl_file_data
+        removeIfExist(tmp_save_obj_file_path)
+        removeIfExist(tmp_save_mtl_file_path)
         return json.dumps(result, ensure_ascii=False)
 
     @app.route('/stop', methods=['POST'])
