@@ -50,7 +50,7 @@ def demo():
         result = {'obj_file': None}
 
         data = getSignal(obj_trans_finished_signal_file_path)
-        if not os.path.exists(tmp_save_obj_file_path)
+        if not os.path.exists(tmp_save_obj_file_path):
             print("[ERROR][demo::transToObj]")
             print("\t transToObj failed!")
             return json.dumps(result, ensure_ascii=False)
