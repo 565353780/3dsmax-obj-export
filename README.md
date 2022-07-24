@@ -3,10 +3,9 @@
 ## Install
 
 ```bash
-cd "C:/Program Files/Autodesk/3ds Max 2023/Python"
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-./python.exe get-pip.py
-./python.exe -m pip install flask
+."C:/Program Files/Autodesk/3ds Max 2023/Python/python.exe" get-pip.py
+."C:/Program Files/Autodesk/3ds Max 2023/Python/python.exe" -m pip install flask
 ```
 
 ## Run Server
@@ -26,8 +25,6 @@ Scripting->Run Script-> select max_server.py
 
 ```bash
 python demo.py
-or
-."C:/Program Files/Autodesk/3ds Max 2023/Python/python.exe" demo.py
 ```
 
 ## Enjoy it~
