@@ -14,6 +14,7 @@ class MaxObjExpClient(object):
         self.server_route = server_route
 
         self.url = "http://" + self.server_ip + ":" + str(self.server_port) + "/" + self.server_route
+        self.stop_url = "http://" + self.server_ip + ":" + str(self.server_port) + "/stop"
         return
 
     def getPostResult(self, max_file_path, obj_file_basename):
@@ -63,6 +64,10 @@ class MaxObjExpClient(object):
                 f.write(mtl_file_data)
         return True
 
+    def stop(self):
+        requests.post(self.stop_url)
+        return True
+
 def demo():
     server_ip = "192.168.2.16"
     server_port = 9360
@@ -74,5 +79,7 @@ def demo():
 
     max_obj_exp_client = MaxObjExpClient(server_ip, server_port, server_route)
     max_obj_exp_client.transToObj(max_file_path, save_obj_file_path)
+
+    max_obj_exp_client.stop()
     return True
 
