@@ -14,6 +14,7 @@ curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 run server in 3ds max
 
 ```bash
+F11 (Script Listener)
 Scripting->Run Script-> select max_server.py
 ```
 
@@ -25,6 +26,8 @@ Scripting->Run Script-> select max_server.py
 
 ```bash
 python demo.py
+or
+."C:/Program Files/Autodesk/3ds Max 2023/Python/python.exe" demo.py
 ```
 
 ## Enjoy it~
