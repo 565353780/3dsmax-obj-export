@@ -4,6 +4,7 @@
 import os
 import json
 from base64 import b64encode, b64decode
+from multiprocessing import Process
 from flask import Flask, request
 
 from pymxs import runtime as rt
@@ -103,57 +104,6 @@ class MaxObjExp(object):
         print(rt.maxFileName)
         return True
 
-    def startServer(self, port, route, tmp_save_folder_path):
-        app = Flask(__name__)
-
-        if tmp_save_folder_path[-1] != "/":
-            tmp_save_folder_path += "/"
-        os.makedirs(tmp_save_folder_path, exist_ok=True)
-
-        tmp_save_max_file_path = tmp_save_folder_path + "tmp.max"
-        tmp_save_obj_file_path = tmp_save_folder_path + "tmp.obj"
-
-        @app.route('/' + route, methods=['POST'])
-        def transToObj():
-            removeIfExist(tmp_save_max_file_path)
-            removeIfExist(tmp_save_obj_file_path)
-
-            data = request.get_data()
-            data = json.loads(data)
-            max_file_base64_data = data['max_file']
-            max_file_data = b64decode(max_file_base64_data)
-            with open(tmp_save_max_file_path, 'wb') as f:
-                f.write(max_file_data)
-
-            result = {'obj_file': None}
-
-            with open(tmp_save_folder_path + "debug.txt", "a") as f:
-                f.write("finish save max file\n")
-
-            if not self.transToObj(tmp_save_max_file_path, tmp_save_obj_file_path):
-                print("[ERROR][MaxObjExp::startServer]")
-                print("\t transToObj failed!")
-
-                with open(tmp_save_folder_path + "debug.txt", "a") as f:
-                    f.write("fail transToObj!!!!!!!!!!!!\n")
-
-                return json.dumps(result, ensure_ascii=False)
-
-            with open(tmp_save_folder_path + "debug.txt", "a") as f:
-                f.write("finish transToObj\n")
-
-            obj_file_data = getBase64Data(tmp_save_obj_file_path)
-            if obj_file_data is None:
-                print("[ERROR]")
-                print("\t getBase64Data failed!")
-                return json.dumps(result, ensure_ascii=False)
-
-            result['obj_file'] = obj_file_data.decode('utf-8')
-            return json.dumps(result, ensure_ascii=False)
-
-        app.run(port=port, host='0.0.0.0')
-        return True
-
 def demo():
     max_file_path = "C:/Program Files/Autodesk/3ds Max 2023/presets/Particle Flow/earth_Squib Sand01.max"
     save_obj_file_path = "D:/test.obj"
@@ -164,16 +114,72 @@ def demo():
     max_obj_exp.transToObj(max_file_path, save_obj_file_path)
     return True
 
+def run(app, port):
+    app.run(port=port, host='0.0.0.0')
+
 def demo_flask():
     port = 9360
     route = "transToObj"
     tmp_save_folder_path = "D:/tmp/"
 
+    app = Flask(__name__)
+
     max_obj_exp = MaxObjExp()
-    max_obj_exp.startServer(port, route, tmp_save_folder_path)
+
+    if tmp_save_folder_path[-1] != "/":
+        tmp_save_folder_path += "/"
+    os.makedirs(tmp_save_folder_path, exist_ok=True)
+
+    tmp_save_max_file_path = tmp_save_folder_path + "tmp.max"
+    tmp_save_obj_file_path = tmp_save_folder_path + "tmp.obj"
+
+    @app.route('/' + route, methods=['POST'])
+    def transToObj():
+        removeIfExist(tmp_save_max_file_path)
+        removeIfExist(tmp_save_obj_file_path)
+
+        data = request.get_data()
+        data = json.loads(data)
+        max_file_base64_data = data['max_file']
+        max_file_data = b64decode(max_file_base64_data)
+        with open(tmp_save_max_file_path, 'wb') as f:
+            f.write(max_file_data)
+
+        result = {'obj_file': None}
+
+        with open(tmp_save_folder_path + "debug.txt", "a") as f:
+            f.write("finish save max file\n")
+
+        if not max_obj_exp.transToObj(tmp_save_max_file_path, tmp_save_obj_file_path):
+            print("[ERROR][MaxObjExp::startServer]")
+            print("\t transToObj failed!")
+
+            with open(tmp_save_folder_path + "debug.txt", "a") as f:
+                f.write("fail transToObj!!!!!!!!!!!!\n")
+
+            return json.dumps(result, ensure_ascii=False)
+
+        with open(tmp_save_folder_path + "debug.txt", "a") as f:
+            f.write("finish transToObj\n")
+
+        obj_file_data = getBase64Data(tmp_save_obj_file_path)
+        if obj_file_data is None:
+            print("[ERROR]")
+            print("\t getBase64Data failed!")
+            return json.dumps(result, ensure_ascii=False)
+
+        result['obj_file'] = obj_file_data.decode('utf-8')
+        return json.dumps(result, ensure_ascii=False)
+
+    p = Process(target=run, args=(port,))
+    p.start()
+    return True
+
+def demo_io():
     return True
 
 if __name__ == "__main__":
     #  demo()
-    demo_flask()
+    #  demo_flask()
+    demo_io()
 
