@@ -19,6 +19,10 @@ def getSignal(signal_file_path):
     with open(signal_file_path, "r") as f:
         data = f.read()
 
-    os.remove(signal_file_path)
+    while os.path.exists(signal_file_path):
+        try:
+            os.remove(signal_file_path)
+        except:
+            continue
     return data
 
