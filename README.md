@@ -11,10 +11,12 @@ curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 
 ## Run
 
+restart 3ds max in order to activate pip-installed packages
+
 run server in 3ds max
 
 ```bash
-Scripting->Run Script-> select test.py
+Scripting->Run Script-> select max_server.py
 ```
 
 run client to call the server
