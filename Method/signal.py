@@ -5,9 +5,20 @@ import os
 import json
 
 from Config.path import TMP_SAVE_FOLDER_PATH
-from Config.signal import START, DATA_IN, DATA_OUT, FINISH
 
 from Method.path import removeIfExist, createFileFolder
+
+def getStartSignal(signal):
+    return signal + ".txt"
+
+def getDataInJson(signal):
+    return signal + ".json"
+
+def getDataOutJson(signal):
+    return signal + "_finish.json"
+
+def getFinishSignal(signal):
+    return signal + "_finish.txt"
 
 def writeData(data_file_path, data, format="wb"):
     createFileFolder(data_file_path)
@@ -25,30 +36,24 @@ def sendSignal(signal_file_name, data="1"):
     return True
 
 def sendDataIn(signal, data):
-    if signal not in START.keys():
-        print("[ERROR][signal::sendDataIn]")
-        print("\t signal not exist!")
-        return False
-
-    data_file_path = TMP_SAVE_FOLDER_PATH + DATA_IN[signal]
+    data_in_json = getDataInJson(signal)
+    data_file_path = TMP_SAVE_FOLDER_PATH + data_in_json
     writeData(data_file_path, data)
 
-    sendSignal(START[signal])
+    start_signal = getStartSignal(signal)
+    sendSignal(start_signal)
     return True
 
 def getDataIn(signal):
-    if signal not in DATA_IN.keys():
-        print("[ERROR][signal::getDataIn]")
-        print("\t signal not exist!")
-        return None
-
-    signal_file_path = TMP_SAVE_FOLDER_PATH + START[signal]
+    start_signal = getStartSignal(signal)
+    signal_file_path = TMP_SAVE_FOLDER_PATH + start_signal
     if not os.path.exists(signal_file_path):
         return None
 
     removeIfExist(signal_file_path)
 
-    data_file_path = TMP_SAVE_FOLDER_PATH + DATA_IN[signal]
+    data_in_json = getDataInJson(signal)
+    data_file_path = TMP_SAVE_FOLDER_PATH + data_in_json
     if not os.path.exists(data_file_path):
         print("[ERROR][signal::getData]")
         print("\t data_file not exist!")
@@ -61,33 +66,28 @@ def getDataIn(signal):
     removeIfExist(data_file_path)
     return data_json
 
-def sendDataOut(signal, data):
-    if signal not in DATA_OUT.keys():
-        print("[ERROR][signal::sendDataOut]")
-        print("\t signal not exist!")
-        return False
+def sendDataOut(signal, data_json):
+    data_out_json = getDataOutJson(signal)
+    data_file_path = TMP_SAVE_FOLDER_PATH + data_out_json
 
-    data_file_path = TMP_SAVE_FOLDER_PATH + DATA_OUT[signal]
-
+    data = json.dumps(data_json)
     writeData(data_file_path, data, "w")
 
-    sendSignal(FINISH[signal])
+    finish_signal = getFinishSignal(signal)
+    sendSignal(finish_signal)
     return True
 
 def getDataOut(signal):
-    if signal not in FINISH.keys():
-        print("[ERROR][signal::getDataOut]")
-        print("\t signal not exist!")
-        return None
-
-    signal_file_path = TMP_SAVE_FOLDER_PATH + FINISH[signal]
+    finish_signal = getFinishSignal(signal)
+    signal_file_path = TMP_SAVE_FOLDER_PATH + finish_signal
     while not os.path.exists(signal_file_path):
         continue
 
     removeIfExist(signal_file_path)
 
     data = None
-    data_file_path = TMP_SAVE_FOLDER_PATH + DATA_OUT[signal]
+    data_out_json = getDataOutJson(signal)
+    data_file_path = TMP_SAVE_FOLDER_PATH + data_out_json
     with open(data_file_path, "r") as f:
         data = f.read()
     data_json = json.loads(data)
