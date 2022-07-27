@@ -5,10 +5,6 @@ from pymxs import runtime as rt
 
 from Method.obj_filter import getObject
 
-def createBox():
-    rt.box()
-    return True
-
 def execute(cmd):
     rt.execute(cmd)
     return True
@@ -21,5 +17,12 @@ def setUserProp(obj_info, prop_name, prop_value):
         return False
 
     rt.setUserProp(obj, prop_name, prop_value)
+    return True
+
+def getPolygonCount(obj):
+    return rt.getPolygonCount(obj)
+
+def createBox():
+    rt.box()
     return True
 
