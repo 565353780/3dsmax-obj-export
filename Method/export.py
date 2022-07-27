@@ -3,31 +3,48 @@
 
 from pymxs import runtime as rt
 
-from Config.max import ALL, NO_PROMPT
+from Config.max import NO_PROMPT
+from Config.export import EXPORT
 
 from Method.load import loadMaxFile, resetMaxFile
+from Method.obj_filter import getNames
+from Method.select import selectObjects, selectAll, deSelectAll
 
-def exportObj(save_file_path, selectedOnly=False):
+def exportFile(save_file_path, selectedOnly):
+    file_type = save_file_path.split(".")[-1]
+
+    if file_type not in EXPORT.keys():
+        print("[ERROR][export::exportFile]")
+        print("\t file_type not valid!")
+        return False
+
     rt.exportFile(save_file_path, NO_PROMPT,
                   selectedOnly=selectedOnly,
-                  using=rt.ObjExp)
+                  using=EXPORT[file_type])
     return True
 
-def exportObjOneByOne(self, save_folder_path):
-    if save_folder_path[-1] != "/":
-        save_folder_path += "/"
-
-    rt.select(ALL)
-    select_obj = rt.selection
-    for i in range(len(select_obj)):
-        rt.select(select_obj[i])
-        save_file_path = save_folder_path + str(i) + ".obj"
-        self.exportObj(save_file_path, True)
+def exportSelection(save_file_path):
+    if not exportFile(save_file_path, True):
+        print("[ERROR][export::exportSelection]")
+        print("\t exportFile failed!")
+        return False
     return True
 
-def exportAllObj(save_file_path):
-    rt.select(ALL)
-    exportObj(save_file_path, True)
+def exportAll(save_file_path):
+    #  selection_names = getNames(rt.selection)
+
+    #  selectAll()
+    if not exportFile(save_file_path, False):
+        print("[ERROR][export::exportAll]")
+        print("\t exportFile failed!")
+        return False
+    #  deSelectAll()
+
+    #  if not selectObjects(selection_names):
+        #  print("[ERROR][export::exportAll]")
+        #  print("\t selectObjects failed!")
+        #  return False
+
     return True
 
 def transMaxToObj(max_file_path, save_obj_file_path):
@@ -36,7 +53,7 @@ def transMaxToObj(max_file_path, save_obj_file_path):
         print("\t loadMaxFile failed!")
         return False
 
-    if not exportObj(save_obj_file_path):
+    if not exportAll(save_obj_file_path):
         print("[ERROR][export::transMaxToObj]")
         print("\t exportObj failed!")
         return False
