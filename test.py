@@ -52,7 +52,7 @@ class MaxOp(object):
         return True
 
     def selectAll(self):
-        rt.select(rt.objects)
+        rt.select(self.objects)
         self.update()
         return True
 
@@ -68,7 +68,7 @@ class MaxOp(object):
         return True
 
     def deSelectAll(self):
-        rt.deselect(rt.objects)
+        rt.deselect(self.objects)
         self.update()
         return True
 
@@ -83,19 +83,54 @@ class MaxOp(object):
         self.update()
         return True
 
-    def deleteAll(self):
-        rt.delete(rt.objects)
+    def deleteSelection(self):
+        rt.delete(self.selection)
         self.update()
         return True
 
-    def moveObject(self, object_info):
+    def deleteAll(self):
+        rt.delete(self.objects)
+        self.update()
+        return True
+
+    def moveObject(self, object_info, move_vector):
         obj = self.getObject(object_info)
         if obj is None:
             print("[ERROR][MaxOp::moveObject]")
             print("\t getObject failed!")
             return False
 
-        rt.move(obj, [1,1,1])
+        move_point = rt.Point3(move_vector[0],
+                               move_vector[1],
+                               move_vector[2])
+        rt.move(obj, move_point)
+        return True
+
+    def moveSelection(self, move_vector):
+        move_point = rt.Point3(move_vector[0],
+                               move_vector[1],
+                               move_vector[2])
+        rt.move(self.selection, move_point)
+        return True
+
+    def moveAll(self, move_vector):
+        move_point = rt.Point3(move_vector[0],
+                               move_vector[1],
+                               move_vector[2])
+        rt.move(self.objects, move_point)
+        return True
+
+    def setObjectPos(self, object_info, pos_vector):
+        obj = self.getObject(object_info)
+        if obj is None:
+            print("[ERROR][MaxOp::moveObject]")
+            print("\t getObject failed!")
+            return False
+
+        pos_point = rt.Point3(pos_vector[0],
+                              pos_vector[1],
+                              pos_vector[2])
+        obj.pos = pos_point
         return True
 
     def getObjectByIdx(self, object_idx):
@@ -239,8 +274,27 @@ class MaxOp(object):
             print("\t deSelectObject for Box002 failed!")
             return False
 
-        self.moveObject("Box001")
-        return
+        self.moveObject("Box001", [1, 1, 1])
+        obj = self.getObject("Box001")
+        if obj is None:
+            print("[ERROR][MaxOp::test]")
+            print("\t getObject for move failed!")
+            return False
+        if obj.pos != rt.Point3(1, 1, 1):
+            print("[ERROR][MaxOp::test]")
+            print("\t moveObject for Box001 failed!")
+            return False
+
+        self.setObjectPos("Box001", [2, 2, 2])
+        obj = self.getObject("Box001")
+        if obj is None:
+            print("[ERROR][MaxOp::test]")
+            print("\t getObject for move failed!")
+            return False
+        if obj.pos != rt.Point3(2, 2, 2):
+            print("[ERROR][MaxOp::test]")
+            print("\t setObjectPos for Box001 failed!")
+            return False
 
         self.deleteAll()
         if len(self.object_names) != 0:
