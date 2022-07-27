@@ -195,22 +195,31 @@ class MaxOp(object):
         self.outputNames(self.selection_names, info_level + 2)
         return True
 
+    def test(self):
+        self.deleteAll()
+
+        self.createBox()
+        self.createBox()
+        self.outputInfo()
+
+        self.selectObject("Box001")
+        self.outputInfo()
+
+        self.selectObject("Box002")
+        self.outputInfo()
+
+        self.deSelectObject("Box001")
+        self.outputInfo()
+        self.deSelectObject("Box002")
+        self.outputInfo()
+
+        self.deleteAll()
+        print("========")
+        return True
+
 def demo():
     max_op = MaxOp()
-
-    #  max_op.createBox()
-    max_op.outputInfo()
-
-    max_op.selectObject("Box003")
-    max_op.outputInfo()
-    max_op.selectObject("Box004")
-    max_op.outputInfo()
-    max_op.deSelectObject("Box003")
-    max_op.outputInfo()
-    max_op.deSelectObject("Box004")
-    max_op.outputInfo()
-
-    print("========")
+    max_op.test()
     return True
 
 if __name__ == "__main__":
