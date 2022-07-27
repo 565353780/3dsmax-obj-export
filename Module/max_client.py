@@ -70,6 +70,6 @@ def demo():
     max_obj_exp_client = MaxClient(server_ip, server_port)
     max_obj_exp_client.transMaxToObj(max_file_path, save_obj_file_path)
 
-    max_obj_exp_client.stop()
+    #  max_obj_exp_client.stop()
     return True
 
