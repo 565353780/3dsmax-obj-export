@@ -54,7 +54,7 @@ class MaxServer(object):
             return False
 
         result_json = {'state': 'stop success'}
-        sendDataOut('stop', result_json)
+        sendDataOut('stop', json.dumps(result_json))
         return True
     
     def start(self):
