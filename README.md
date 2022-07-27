@@ -14,7 +14,7 @@ run server in 3ds max
 
 ```bash
 F11 (Script Listener)
-Scripting->Run Script-> select max_server.py
+Scripting->Run Script-> select server.py
 ```
 
 ```bash
