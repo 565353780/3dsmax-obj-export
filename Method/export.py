@@ -30,19 +30,19 @@ def exportAllObj(save_file_path):
     exportObj(save_file_path, True)
     return True
 
-def transToObj(max_file_path, save_obj_file_path):
+def transMaxToObj(max_file_path, save_obj_file_path):
     if not loadMaxFile(max_file_path):
-        print("[ERROR][export::transToObj]")
+        print("[ERROR][export::transMaxToObj]")
         print("\t loadMaxFile failed!")
         return False
 
     if not exportObj(save_obj_file_path):
-        print("[ERROR][export::transToObj]")
+        print("[ERROR][export::transMaxToObj]")
         print("\t exportObj failed!")
         return False
 
     if not resetMaxFile():
-        print("[ERROR][export::transToObj]")
+        print("[ERROR][export::transMaxToObj]")
         print("\t resetMaxFile failed!")
         return False
     return True

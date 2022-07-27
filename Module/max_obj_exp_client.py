@@ -24,7 +24,7 @@ class MaxObjExpClient(object):
             print("\t getBase64Data failed!")
             return None
 
-        data = {'max_file': max_file_data, 'obj_file_basename': obj_file_basename}
+        data = {'max_data': max_file_data, 'obj_file_basename': obj_file_basename}
         result = requests.post(self.url, data=json.dumps(data)).text
         try:
             result_json = json.loads(result)
