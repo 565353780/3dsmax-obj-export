@@ -3,6 +3,5 @@
 
 from pymxs import runtime as rt
 
-ALL = rt.Name('all')
 NO_PROMPT = rt.Name('noPrompt')
 
