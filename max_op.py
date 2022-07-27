@@ -1,147 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from scipy.spatial.transform import Rotation as R
-
 from pymxs import runtime as rt
 
 import sys
 sys.path.append("D:/github/3dsmax-obj-export/")
 
-from Method.control import getNames, getObject
+from Method.obj_filter import getNames, getObject
+from Method.select import selectObject, deSelectObject
+from Method.control import createBox
+from Method.delete import deleteAll
+from Method.move import moveObject
+from Method.pose import getQuatFromAngle, setObjectPos, setObjectScale, setObjectRotation
 
 class MaxOp(object):
     def __init__(self):
         return
-
-    def execute(self, cmd):
-        rt.execute(cmd)
-        return True
-
-    def setUserProp(self, obj, prop_name, prop_value):
-        rt.setUserProp(obj, prop_name, prop_value)
-        return True
-
-    def createBox(self):
-        rt.box()
-        return True
-
-    def selectObject(self, object_info, with_history=True):
-        obj = getObject(object_info)
-        if obj is None:
-            print("[ERROR][MaxOp::selectObject]")
-            print("\t getObject failed!")
-            return False
-
-        if with_history:
-            rt.select([obj] + rt.selection)
-        else:
-            rt.select(obj)
-        return True
-
-    def selectAll(self):
-        rt.select(rt.objects)
-        return True
-
-    def deSelectObject(self, object_info):
-        obj = getObject(object_info)
-        if obj is None:
-            print("[ERROR][MaxOp::deSelectObject]")
-            print("\t getObject failed!")
-            return False
-
-        rt.deselect(obj)
-        return True
-
-    def deSelectAll(self):
-        rt.deselect(rt.objects)
-        return True
-
-    def deleteObject(self, object_info):
-        obj = getObject(object_info)
-        if obj is None:
-            print("[ERROR][MaxOp::deleteObject]")
-            print("\t getObject failed!")
-            return False
-
-        rt.delete(obj)
-        return True
-
-    def deleteSelection(self):
-        rt.delete(rt.selection)
-        return True
-
-    def deleteAll(self):
-        rt.delete(rt.objects)
-        return True
-
-    def moveObject(self, object_info, move_vector):
-        obj = getObject(object_info)
-        if obj is None:
-            print("[ERROR][MaxOp::moveObject]")
-            print("\t getObject failed!")
-            return False
-
-        move_point = rt.Point3(move_vector[0],
-                               move_vector[1],
-                               move_vector[2])
-        rt.move(obj, move_point)
-        return True
-
-    def moveSelection(self, move_vector):
-        move_point = rt.Point3(move_vector[0],
-                               move_vector[1],
-                               move_vector[2])
-        rt.move(rt.selection, move_point)
-        return True
-
-    def moveAll(self, move_vector):
-        move_point = rt.Point3(move_vector[0],
-                               move_vector[1],
-                               move_vector[2])
-        rt.move(rt.objects, move_point)
-        return True
-
-    def setObjectPos(self, object_info, pos_vector):
-        obj = getObject(object_info)
-        if obj is None:
-            print("[ERROR][MaxOp::setObjectPos]")
-            print("\t getObject failed!")
-            return False
-
-        pos_point = rt.Point3(pos_vector[0],
-                              pos_vector[1],
-                              pos_vector[2])
-        obj.pos = pos_point
-        return True
-
-    def setObjectScale(self, object_info, scale_vector):
-        obj = getObject(object_info)
-        if obj is None:
-            print("[ERROR][MaxOp::setObjectScale]")
-            print("\t getObject failed!")
-            return False
-
-        scale_point = rt.Point3(scale_vector[0],
-                                scale_vector[1],
-                                scale_vector[2])
-        obj.scale = scale_point
-        return True
-
-    def setObjectRotation(self, object_info, rotation_vector):
-        obj = getObject(object_info)
-        if obj is None:
-            print("[ERROR][MaxOp::setObjectRotation]")
-            print("\t getObject failed!")
-            return False
-
-        quat = R.from_euler('zxy', rotation_vector, degrees=True).as_quat()
-        rotation_quat = rt.Quat(float(quat[0]),
-                                float(quat[1]),
-                                float(quat[2]),
-                                float(quat[3]))
-        obj.rotation = rotation_quat
-        return True
 
     def getPolygonCount(self, obj):
         return rt.getPolygonCount(obj)
@@ -196,56 +70,59 @@ class MaxOp(object):
         return True
 
     def test(self):
-        self.deleteAll()
+        print("[INFO][MaxOp::test]")
+        print("\t test start...")
+
+        deleteAll()
         object_names = getNames(rt.objects)
         if len(object_names) != 0:
             print("[ERROR][MaxOp::test]")
             print("\t deleteAll for first time failed!")
             return False
 
-        self.createBox()
+        createBox()
         object_names = getNames(rt.objects)
         if object_names != ["Box001"]:
             print("[ERROR][MaxOp::test]")
             print("\t createBox for Box001 failed!")
             return False
 
-        self.createBox()
+        createBox()
         object_names = getNames(rt.objects)
         if object_names != ["Box001", "Box002"]:
             print("[ERROR][MaxOp::test]")
             print("\t createBox for Box002 failed!")
             return False
 
-        self.selectObject("Box001")
+        selectObject("Box001")
         selection_names = getNames(rt.selection)
         if selection_names != ["Box001"]:
             print("[ERROR][MaxOp::test]")
             print("\t selectObject for Box001 failed!")
             return False
 
-        self.selectObject("Box002")
+        selectObject("Box002")
         selection_names = getNames(rt.selection)
         if selection_names != ["Box002", "Box001"]:
             print("[ERROR][MaxOp::test]")
             print("\t selectObject for Box002 failed!")
             return False
 
-        self.deSelectObject("Box001")
+        deSelectObject("Box001")
         selection_names = getNames(rt.selection)
         if selection_names != ["Box002"]:
             print("[ERROR][MaxOp::test]")
             print("\t deSelectObject for Box001 failed!")
             return False
 
-        self.deSelectObject("Box002")
+        deSelectObject("Box002")
         selection_names = getNames(rt.selection)
         if len(selection_names) != 0:
             print("[ERROR][MaxOp::test]")
             print("\t deSelectObject for Box002 failed!")
             return False
 
-        self.moveObject("Box001", [1, 1, 1])
+        moveObject("Box001", [1, 1, 1])
         obj = getObject("Box001")
         if obj is None:
             print("[ERROR][MaxOp::test]")
@@ -256,7 +133,7 @@ class MaxOp(object):
             print("\t moveObject for Box001 failed!")
             return False
 
-        self.setObjectPos("Box001", [2, 2, 2])
+        setObjectPos("Box001", [2, 2, 2])
         obj = getObject("Box001")
         if obj is None:
             print("[ERROR][MaxOp::test]")
@@ -267,9 +144,9 @@ class MaxOp(object):
             print("\t setObjectPos for Box001 failed!")
             return False
 
-        self.setObjectPos("Box001", [0, 0, 0])
+        setObjectPos("Box001", [0, 0, 0])
 
-        self.setObjectScale("Box001", [2, 3, 1])
+        setObjectScale("Box001", [2, 3, 1])
         obj = getObject("Box001")
         if obj is None:
             print("[ERROR][MaxOp::test]")
@@ -280,22 +157,18 @@ class MaxOp(object):
             print("\t setObjectScale for Box001 failed!")
             return False
 
-        self.setObjectRotation("Box001", [90, 0, 0])
+        setObjectRotation("Box001", [90, 0, 0])
         obj = getObject("Box001")
         if obj is None:
             print("[ERROR][MaxOp::test]")
             print("\t getObject for set rotation failed!")
             return False
-        quat = R.from_euler('zxy', [90, 0, 0], degrees=True).as_quat()
-        if obj.rotation != rt.Quat(float(quat[0]),
-                                   float(quat[1]),
-                                   float(quat[2]),
-                                   float(quat[3])):
+        if obj.rotation != getQuatFromAngle([90, 0, 0]):
             print("[ERROR][MaxOp::test]")
             print("\t setObjectRotation for Box001 failed!")
             return False
 
-        self.deleteAll()
+        deleteAll()
         object_names = getNames(rt.objects)
         if len(object_names) != 0:
             print("[ERROR][MaxOp::test]")
