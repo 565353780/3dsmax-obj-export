@@ -200,7 +200,7 @@ class MaxOp(object):
         object_names = getNames(rt.objects)
         if len(object_names) != 0:
             print("[ERROR][MaxOp::test]")
-            print("\t deleteAll failed!")
+            print("\t deleteAll for first time failed!")
             return False
 
         self.createBox()
@@ -296,9 +296,10 @@ class MaxOp(object):
             return False
 
         self.deleteAll()
+        object_names = getNames(rt.objects)
         if len(object_names) != 0:
             print("[ERROR][MaxOp::test]")
-            print("\t deleteAll failed!")
+            print("\t deleteAll for last time failed!")
             return False
 
         print("[INFO][MaxOp::test]")
