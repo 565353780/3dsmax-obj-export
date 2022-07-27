@@ -60,8 +60,8 @@ class MaxClient(object):
         return True
 
 def demo():
-    server_ip = "192.168.2.16"
-    server_port = 9360
+    server_ip = "112.26.202.195"
+    server_port = 9365
 
     #  max_file_path = "C:/Program Files/Autodesk/3ds Max 2023/presets/Particle Flow/earth_Squib Sand01.max"
     max_file_path = "/home/chli/chLi/tmp.max"
@@ -70,6 +70,6 @@ def demo():
     max_obj_exp_client = MaxClient(server_ip, server_port)
     max_obj_exp_client.transMaxToObj(max_file_path, save_obj_file_path)
 
-    #  max_obj_exp_client.stop()
+    max_obj_exp_client.stop()
     return True
 

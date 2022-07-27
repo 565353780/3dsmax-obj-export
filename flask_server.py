@@ -13,7 +13,7 @@ from Config.path import TMP_SAVE_FOLDER_PATH
 from Method.signal import sendDataIn, getDataOut
 
 def demo():
-    port = 9360
+    port = 9365
 
     app = Flask(__name__)
 
