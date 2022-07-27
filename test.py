@@ -88,6 +88,16 @@ class MaxOp(object):
         self.update()
         return True
 
+    def moveObject(self, object_info):
+        obj = self.getObject(object_info)
+        if obj is None:
+            print("[ERROR][MaxOp::moveObject]")
+            print("\t getObject failed!")
+            return False
+
+        rt.move(obj, [1,1,1])
+        return True
+
     def getObjectByIdx(self, object_idx):
         if object_idx >= len(self.objects):
             print("[ERROR][MaxOp::getObjectByIdx]")
@@ -228,6 +238,9 @@ class MaxOp(object):
             print("[ERROR][MaxOp::test]")
             print("\t deSelectObject for Box002 failed!")
             return False
+
+        self.moveObject("Box001")
+        return
 
         self.deleteAll()
         if len(self.object_names) != 0:
