@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import math
+import numpy as np
+from scipy.spatial.transform import Rotation as R
+
 import pymxs
 from pymxs import runtime as rt
 
@@ -144,6 +148,18 @@ class MaxOp(object):
                                 scale_vector[1],
                                 scale_vector[2])
         obj.scale = scale_point
+        return True
+
+    def setObjectRotation(self, object_info, rotation_vector):
+        obj = self.getObject(object_info)
+        if obj is None:
+            print("[ERROR][MaxOp::setObjectRotation]")
+            print("\t getObject failed!")
+            return False
+
+        quat = R.from_euler('zxy', rotation_vector, degrees=True).as_quat()
+        rotation_quat = rt.Quat(float(quat[0]), float(quat[1]), float(quat[2]), float(quat[3]))
+        obj.rotation = rotation_quat
         return True
 
     def getObjectByIdx(self, object_idx):
@@ -324,6 +340,8 @@ class MaxOp(object):
             print("\t setObjectPos for Box001 failed!")
             return False
 
+        self.setObjectPos("Box001", [0, 0, 0])
+
         self.setObjectScale("Box001", [2, 3, 1])
         obj = self.getObject("Box001")
         if obj is None:
@@ -333,6 +351,18 @@ class MaxOp(object):
         if obj.scale != rt.Point3(2, 3, 1):
             print("[ERROR][MaxOp::test]")
             print("\t setObjectScale for Box001 failed!")
+            return False
+
+        self.setObjectRotation("Box001", [90, 0, 0])
+        obj = self.getObject("Box001")
+        if obj is None:
+            print("[ERROR][MaxOp::test]")
+            print("\t getObject for set rotation failed!")
+            return False
+        quat = R.from_euler('zxy', [90, 0, 0], degrees=True).as_quat()
+        if obj.rotation != rt.Quat(float(quat[0]), float(quat[1]), float(quat[2]), float(quat[3])):
+            print("[ERROR][MaxOp::test]")
+            print("\t setObjectRotation for Box001 failed!")
             return False
 
         self.deleteAll()
