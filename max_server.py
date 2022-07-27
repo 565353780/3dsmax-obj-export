@@ -9,6 +9,7 @@ sys.path.append("D:/github/3dsmax-obj-export/")
 
 from Config.path import TMP_SAVE_FOLDER_PATH
 
+from Method.path import removeIfExist
 from Method.export import transMaxToObj
 from Method.signal import getDataIn, sendDataOut
 from Method.encode import getBase64Data, saveData
@@ -34,16 +35,21 @@ class MaxServer(object):
             print("\t transMaxToObj failed!")
             return False
 
-        obj_data = getBase64Data(save_obj_file_path)
+        removeIfExist(max_file_path)
 
+        obj_data = getBase64Data(save_obj_file_path)
         result_json = {
             'obj_data': obj_data,
             'mtl_data': None,
         }
 
+        removeIfExist(save_obj_file_path)
+
         mtl_file_path = TMP_SAVE_FOLDER_PATH + obj_file_basename + ".mtl"
         if os.path.exists(mtl_file_path):
             result_json['mtl_data'] = getBase64Data(mtl_file_path)
+
+            removeIfExist(mtl_file_path)
 
         sendDataOut('transMaxToObj', json.dumps(result_json))
         return True
