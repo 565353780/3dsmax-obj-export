@@ -21,25 +21,22 @@ class MaxOp(object):
         self.selection_names = self.getNames(self.selection)
         return True
 
-    def execute(self, cmd, update=True):
+    def execute(self, cmd):
         rt.execute(cmd)
-        if update:
-            self.update()
+        self.update()
         return True
 
-    def setUserProp(self, obj, prop_name, prop_value, update=True):
+    def setUserProp(self, obj, prop_name, prop_value):
         rt.setUserProp(obj, prop_name, prop_value)
-        if update:
-            self.update()
+        self.update()
         return True
 
-    def createBox(self, update=True):
+    def createBox(self):
         rt.box()
-        if update:
-            self.update()
+        self.update()
         return True
 
-    def selectObject(self, object_info, with_history=True, update=True):
+    def selectObject(self, object_info, with_history=True):
         obj = self.getObject(object_info)
         if obj is None:
             print("[ERROR][MaxOp::selectObject]")
@@ -51,17 +48,15 @@ class MaxOp(object):
         else:
             rt.select(obj)
 
-        if update:
-            self.update()
+        self.update()
         return True
 
-    def selectAll(self, update=True):
+    def selectAll(self):
         rt.select(rt.objects)
-        if update:
-            self.update()
+        self.update()
         return True
 
-    def deSelectObject(self, object_info, update=True):
+    def deSelectObject(self, object_info):
         obj = self.getObject(object_info)
         if obj is None:
             print("[ERROR][MaxOp::deSelectObject]")
@@ -69,17 +64,15 @@ class MaxOp(object):
             return False
 
         rt.deselect(obj)
-        if update:
-            self.update()
+        self.update()
         return True
 
-    def deSelectAll(self, update=True):
+    def deSelectAll(self):
         rt.deselect(rt.objects)
-        if update:
-            self.update()
+        self.update()
         return True
 
-    def deleteObject(self, object_info, update=True):
+    def deleteObject(self, object_info):
         obj = self.getObject(object_info)
         if obj is None:
             print("[ERROR][MaxOp::deleteObject]")
@@ -87,14 +80,12 @@ class MaxOp(object):
             return False
 
         rt.delete(obj)
-        if update:
-            self.update()
+        self.update()
         return True
 
-    def deleteAll(self, update=True):
+    def deleteAll(self):
         rt.delete(rt.objects)
-        if update:
-            self.update()
+        self.update()
         return True
 
     def getObjectByIdx(self, object_idx):
@@ -197,24 +188,55 @@ class MaxOp(object):
 
     def test(self):
         self.deleteAll()
+        if len(self.object_names) != 0:
+            print("[ERROR][MaxOp::test]")
+            print("\t deleteAll failed!")
+            return False
 
         self.createBox()
+        if self.object_names != ["Box001"]:
+            print("[ERROR][MaxOp::test]")
+            print("\t createBox for Box001 failed!")
+            return False
+
         self.createBox()
-        self.outputInfo()
+        if self.object_names != ["Box001", "Box002"]:
+            print("[ERROR][MaxOp::test]")
+            print("\t createBox for Box002 failed!")
+            return False
 
         self.selectObject("Box001")
-        self.outputInfo()
+        if self.selection_names != ["Box001"]:
+            print("[ERROR][MaxOp::test]")
+            print("\t selectObject for Box001 failed!")
+            return False
 
         self.selectObject("Box002")
-        self.outputInfo()
+        if self.selection_names != ["Box002", "Box001"]:
+            print("[ERROR][MaxOp::test]")
+            print("\t selectObject for Box002 failed!")
+            return False
 
         self.deSelectObject("Box001")
-        self.outputInfo()
+        if self.selection_names != ["Box002"]:
+            print("[ERROR][MaxOp::test]")
+            print("\t deSelectObject for Box001 failed!")
+            return False
+
         self.deSelectObject("Box002")
-        self.outputInfo()
+        if len(self.selection_names) != 0:
+            print("[ERROR][MaxOp::test]")
+            print("\t deSelectObject for Box002 failed!")
+            return False
 
         self.deleteAll()
-        print("========")
+        if len(self.object_names) != 0:
+            print("[ERROR][MaxOp::test]")
+            print("\t deleteAll failed!")
+            return False
+
+        print("[INFO][MaxOp::test]")
+        print("\t all test running succees!")
         return True
 
 def demo():
