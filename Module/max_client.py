@@ -31,6 +31,7 @@ class MaxClient(object):
             print("[ERROR][MaxClient::getPostResult]")
             print("\t getBase64Data failed!")
             return None
+
         obj_file_basename = save_obj_file_path.split("/")[-1].split(".obj")[0]
         data = {'max_data': max_data, 'obj_file_basename': obj_file_basename}
 
@@ -43,7 +44,7 @@ class MaxClient(object):
         obj_data = result['obj_data']
         if obj_data is None:
             print("[ERROR][MaxClient::transMaxToObj]")
-            print("\t obj_file_data is None!")
+            print("\t obj_data is None!")
             return False
 
         saveData(obj_data, save_obj_file_path)
@@ -67,9 +68,9 @@ def demo():
     max_file_path = "/home/chli/chLi/tmp.max"
     save_obj_file_path = "/home/chli/chLi/test.obj"
 
-    max_obj_exp_client = MaxClient(server_ip, server_port)
-    max_obj_exp_client.transMaxToObj(max_file_path, save_obj_file_path)
+    max_client = MaxClient(server_ip, server_port)
+    max_client.transMaxToObj(max_file_path, save_obj_file_path)
 
-    #  max_obj_exp_client.stop()
+    #  max_client.stop()
     return True
 
