@@ -4,9 +4,6 @@
 import os
 import json
 
-import sys
-sys.path.append("D:/github/3dsmax-obj-export/")
-
 from Config.path import TMP_SAVE_FOLDER_PATH
 
 from Method.path import removeIfExist
@@ -75,7 +72,4 @@ def demo():
     max_server = MaxServer()
     max_server.start()
     return True
-
-if __name__ == "__main__":
-    demo()
 
