@@ -18,6 +18,14 @@ def selectObject(object_info, with_history=True):
         rt.select(obj)
     return True
 
+def selectObjects(object_info_list, with_history=True):
+    for object_info in object_info_list:
+        if not selectObject(object_info, with_history):
+            print("[ERROR][select::selectObjects]")
+            print("\t selectObject failed!")
+            return False
+    return True
+
 def selectAll():
     rt.select(rt.objects)
     return True
