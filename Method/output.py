@@ -5,6 +5,18 @@ from pymxs import runtime as rt
 
 from Method.obj_filter import getNames, getObject
 
+def outputMaxFilePath():
+    print("[INFO][output::outputMaxFilePath]")
+    print("\t maxFilePath =")
+    print(rt.maxFilePath)
+    return True
+
+def outputMaxFileName():
+    print("[INFO][output::outputMaxFileName]")
+    print("\t maxFileName =")
+    print(rt.maxFileName)
+    return True
+
 def outputNames(names, info_level=0):
     line_start = "\t" * info_level
     if len(names) == 0:
