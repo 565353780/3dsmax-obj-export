@@ -123,7 +123,7 @@ class MaxOp(object):
     def setObjectPos(self, object_info, pos_vector):
         obj = self.getObject(object_info)
         if obj is None:
-            print("[ERROR][MaxOp::moveObject]")
+            print("[ERROR][MaxOp::setObjectPos]")
             print("\t getObject failed!")
             return False
 
@@ -131,6 +131,19 @@ class MaxOp(object):
                               pos_vector[1],
                               pos_vector[2])
         obj.pos = pos_point
+        return True
+
+    def setObjectScale(self, object_info, scale_vector):
+        obj = self.getObject(object_info)
+        if obj is None:
+            print("[ERROR][MaxOp::setObjectScale]")
+            print("\t getObject failed!")
+            return False
+
+        scale_point = rt.Point3(scale_vector[0],
+                                scale_vector[1],
+                                scale_vector[2])
+        obj.scale = scale_point
         return True
 
     def getObjectByIdx(self, object_idx):
@@ -220,6 +233,21 @@ class MaxOp(object):
         print(line_start + "]")
         return True
 
+    def outputObject(self, object_info, info_level=0):
+        obj = self.getObject(object_info)
+        if obj is None:
+            print("[WARN][MaxOp::outputObject]")
+            print("\t getObject failed!")
+            return False
+
+        line_start = "\t" * info_level
+        print(line_start + "[Object]")
+        print(line_start + "\t name =", obj.name)
+        print(line_start + "\t pos =", obj.pos)
+        print(line_start + "\t scale =", obj.scale)
+        print(line_start + "\t rotation =", obj.rotation)
+        return True
+
     def outputInfo(self, info_level=0):
         line_start = "\t" * info_level
         print(line_start + "[ObjectInfo]")
@@ -289,11 +317,22 @@ class MaxOp(object):
         obj = self.getObject("Box001")
         if obj is None:
             print("[ERROR][MaxOp::test]")
-            print("\t getObject for move failed!")
+            print("\t getObject for set pos failed!")
             return False
         if obj.pos != rt.Point3(2, 2, 2):
             print("[ERROR][MaxOp::test]")
             print("\t setObjectPos for Box001 failed!")
+            return False
+
+        self.setObjectScale("Box001", [2, 3, 1])
+        obj = self.getObject("Box001")
+        if obj is None:
+            print("[ERROR][MaxOp::test]")
+            print("\t getObject for set scale failed!")
+            return False
+        if obj.scale != rt.Point3(2, 3, 1):
+            print("[ERROR][MaxOp::test]")
+            print("\t setObjectScale for Box001 failed!")
             return False
 
         self.deleteAll()
