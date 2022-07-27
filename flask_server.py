@@ -19,6 +19,10 @@ def demo():
 
     os.makedirs(TMP_SAVE_FOLDER_PATH, exist_ok=True)
 
+    @app.route('/')
+    def index():
+        return "Hello"
+
     @app.route('/transMaxToObj', methods=['POST'])
     def transMaxToObj():
         data = request.get_data()
