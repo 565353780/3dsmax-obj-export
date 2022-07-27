@@ -67,11 +67,11 @@ def sendDataOut(signal, data):
         print("\t signal not exist!")
         return False
 
-    print("!!!!")
-    print(type(TMP_SAVE_FOLDER_PATH))
-    print(type(DATA_OUT[signal]))
     data_file_path = TMP_SAVE_FOLDER_PATH + DATA_OUT[signal]
 
+    print("!!!!")
+    print(type(data_file_path))
+    print(type(data))
     writeData(data_file_path, data)
 
     sendSignal(FINISH[signal])
