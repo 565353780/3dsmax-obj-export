@@ -3,94 +3,35 @@
 
 import os
 import json
-from base64 import b64encode, b64decode
 from multiprocessing import Process
 from flask import Flask, request
 
 from pymxs import runtime as rt
 
-def removeIfExist(file_path):
-    if not os.path.exists(file_path):
-        return True
+import sys
+sys.path.append("D:/github/3dsmax-obj-export/")
 
-    while os.path.exists(file_path):
-        try:
-            os.remove(file_path)
-        except:
-            continue
-    return True
-
-def createFileFolder(file_path):
-    file_name = file_path.split("/")[-1]
-    file_folder_path = file_path.split(file_name)[0]
-    os.makedirs(file_folder_path, exist_ok=True)
-    return True
-
-def getBase64Data(file_path):
-    if not os.path.exists(file_path):
-        print("[ERROR][demo::getBase64Data]")
-        print("\t file not exist!")
-        return None
-
-    with open(file_path, 'rb') as f:
-        file_data = f.read()
-        base64_data = b64encode(file_data).decode().encode('utf-8')
-        return base64_data
+from Method.path import removeIfExist
+from Method.encode import getBase64Data, getDecodeData
+from Method.load import loadMaxFile, resetMaxFile
+from Method.export import exportObj
 
 class MaxObjExp(object):
     def __init__(self):
-        self.all = rt.Name('all')
-        self.no_prompt = rt.Name('noPrompt')
         return
 
-    def loadMaxFile(self, max_file_path):
-        if not os.path.exists(max_file_path):
-            print("[ERROR][MaxObjExp::loadMaxFile]")
-            print("\t max_file not exist!")
-            return False
-
-        rt.loadMaxFile(max_file_path)
-        return True
-
-    def resetMaxFile(self):
-        rt.resetMaxFile(self.no_prompt)
-        return True
-
-    def exportObj(self, save_file_path, selectedOnly=False):
-        rt.exportFile(save_file_path, self.no_prompt,
-                      selectedOnly=selectedOnly,
-                      using=rt.ObjExp)
-        return True
-
-    def exportObjOneByOne(self, save_folder_path):
-        if save_folder_path[-1] != "/":
-            save_folder_path += "/"
-
-        rt.select(self.all)
-        select_obj = rt.selection
-        for i in range(len(select_obj)):
-            rt.select(select_obj[i])
-            save_file_path = save_folder_path + str(i) + ".obj"
-            self.exportObj(save_file_path, True)
-        return True
-
-    def exportAllObj(self, save_file_path):
-        rt.select(self.all)
-        self.exportObj(save_file_path, True)
-        return True
-
     def transToObj(self, max_file_path, save_obj_file_path):
-        if not self.loadMaxFile(max_file_path):
+        if not loadMaxFile(max_file_path):
             print("[ERROR][MaxObjExp::transToObj]")
             print("\t loadMaxFile failed!")
             return False
 
-        if not self.exportObj(save_obj_file_path):
+        if not exportObj(save_obj_file_path):
             print("[ERROR][MaxObjExp::transToObj]")
             print("\t exportObj failed!")
             return False
 
-        if not self.resetMaxFile():
+        if not resetMaxFile():
             print("[ERROR][MaxObjExp::transToObj]")
             print("\t resetMaxFile failed!")
             return False
@@ -145,7 +86,7 @@ def demo_flask():
         data = request.get_data()
         data = json.loads(data)
         max_file_base64_data = data['max_file']
-        max_file_data = b64decode(max_file_base64_data)
+        max_file_data = getDecodeData(max_file_base64_data)
         with open(tmp_save_max_file_path, 'wb') as f:
             f.write(max_file_data)
 
@@ -162,7 +103,7 @@ def demo_flask():
             print("\t getBase64Data failed!")
             return json.dumps(result, ensure_ascii=False)
 
-        result['obj_file'] = obj_file_data.decode('utf-8')
+        result['obj_file'] = obj_file_data
         return json.dumps(result, ensure_ascii=False)
 
     p = Process(target=run, args=(port,))
