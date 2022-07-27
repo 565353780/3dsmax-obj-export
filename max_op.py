@@ -8,7 +8,7 @@ sys.path.append("D:/github/3dsmax-obj-export/")
 
 from Method.obj_filter import getNames, getObject
 from Method.select import selectObject, deSelectObject
-from Method.control import execute, createBox
+from Method.control import *
 from Method.delete import deleteAll
 from Method.move import moveObject
 from Method.pose import getQuatFromAngle, setObjectPos, setObjectScale, setObjectRotation
