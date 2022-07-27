@@ -5,7 +5,7 @@
 ```bash
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 ."C:/Program Files/Autodesk/3ds Max 2023/Python/python.exe" get-pip.py
-."C:/Program Files/Autodesk/3ds Max 2023/Python/python.exe" -m pip install flask
+."C:/Program Files/Autodesk/3ds Max 2023/Python/python.exe" -m pip install flask scipy
 ```
 
 ## Run Server
