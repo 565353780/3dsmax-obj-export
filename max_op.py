@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import math
-import numpy as np
 from scipy.spatial.transform import Rotation as R
 
 import pymxs
@@ -158,7 +156,10 @@ class MaxOp(object):
             return False
 
         quat = R.from_euler('zxy', rotation_vector, degrees=True).as_quat()
-        rotation_quat = rt.Quat(float(quat[0]), float(quat[1]), float(quat[2]), float(quat[3]))
+        rotation_quat = rt.Quat(float(quat[0]),
+                                float(quat[1]),
+                                float(quat[2]),
+                                float(quat[3]))
         obj.rotation = rotation_quat
         return True
 
@@ -360,7 +361,10 @@ class MaxOp(object):
             print("\t getObject for set rotation failed!")
             return False
         quat = R.from_euler('zxy', [90, 0, 0], degrees=True).as_quat()
-        if obj.rotation != rt.Quat(float(quat[0]), float(quat[1]), float(quat[2]), float(quat[3])):
+        if obj.rotation != rt.Quat(float(quat[0]),
+                                   float(quat[1]),
+                                   float(quat[2]),
+                                   float(quat[3])):
             print("[ERROR][MaxOp::test]")
             print("\t setObjectRotation for Box001 failed!")
             return False
