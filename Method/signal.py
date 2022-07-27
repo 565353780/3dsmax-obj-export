@@ -9,9 +9,10 @@ from Config.signal import START, DATA_IN, DATA_OUT, FINISH
 
 from Method.path import removeIfExist, createFileFolder
 
-def writeData(data_file_path, data):
+def writeData(data_file_path, data, format="wb"):
     createFileFolder(data_file_path)
-    with open(data_file_path, "wb") as f:
+
+    with open(data_file_path, format) as f:
         f.write(data)
     return True
 
@@ -67,7 +68,7 @@ def sendDataOut(signal, data):
         return False
 
     data_file_path = TMP_SAVE_FOLDER_PATH + DATA_OUT[signal]
-    writeData(data_file_path, data)
+    writeData(data_file_path, data, "w")
 
     sendSignal(FINISH[signal])
     return True
@@ -86,7 +87,7 @@ def getDataOut(signal):
 
     data = None
     data_file_path = TMP_SAVE_FOLDER_PATH + DATA_OUT[signal]
-    with open(data_file_path, "rb") as f:
+    with open(data_file_path, "r") as f:
         data = f.read()
     data_json = json.loads(data)
 

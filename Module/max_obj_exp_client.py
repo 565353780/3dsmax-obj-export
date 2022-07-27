@@ -43,7 +43,7 @@ class MaxObjExpClient(object):
             print("\t getPostResult failed!")
             return False
 
-        obj_file_base64_data = result['obj_file']
+        obj_file_base64_data = result['obj_data']
         if obj_file_base64_data is None:
             print("[ERROR][MaxObjExpClient::transToObj]")
             print("\t obj_file_data is None!")
@@ -57,7 +57,7 @@ class MaxObjExpClient(object):
         with open(save_obj_file_path, 'wb') as f:
             f.write(obj_file_data)
 
-        mtl_file_base64_data = result['mtl_file']
+        mtl_file_base64_data = result['mtl_data']
         if mtl_file_base64_data is not None:
             mtl_file_data = getDecodeData(mtl_file_base64_data)
             with open(save_mtl_file_path, "wb") as f:
@@ -71,7 +71,7 @@ class MaxObjExpClient(object):
 def demo():
     server_ip = "192.168.2.16"
     server_port = 9360
-    server_route = "transToObj"
+    server_route = "transMaxToObj"
 
     #  max_file_path = "C:/Program Files/Autodesk/3ds Max 2023/presets/Particle Flow/earth_Squib Sand01.max"
     max_file_path = "/home/chli/chLi/tmp.max"
