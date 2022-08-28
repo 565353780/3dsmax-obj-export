@@ -3,12 +3,12 @@
 
 from pymxs import runtime as rt
 
-from Config.max import NO_PROMPT
-from Config.export import EXPORT
+from max_obj_export.Config.max import NO_PROMPT
+from max_obj_export.Config.export import EXPORT
 
-from Method.load import loadMaxFile, resetMaxFile
-from Method.obj_filter import getNames
-from Method.select import selectObjects, selectAll, deSelectAll
+from max_obj_export.Method.load import loadMaxFile, resetMaxFile
+from max_obj_export.Method.obj_filter import getNames
+from max_obj_export.Method.select import selectObjects, selectAll, deSelectAll
 
 def exportFile(save_file_path, selectedOnly):
     file_type = save_file_path.split(".")[-1]

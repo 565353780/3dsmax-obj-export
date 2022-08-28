@@ -3,12 +3,12 @@
 
 from pymxs import runtime as rt
 
-from Method.obj_filter import getNames, getObject
-from Method.select import selectObject, deSelectObject
-from Method.control import createBox
-from Method.delete import deleteAll
-from Method.move import moveObject
-from Method.pose import getQuatFromAngle, setObjectPos, setObjectScale, setObjectRotation
+from max_obj_export.Method.obj_filter import getNames, getObject
+from max_obj_export.Method.select import selectObject, deSelectObject
+from max_obj_export.Method.control import createBox
+from max_obj_export.Method.delete import deleteAll
+from max_obj_export.Method.move import moveObject
+from max_obj_export.Method.pose import getQuatFromAngle, setObjectPos, setObjectScale, setObjectRotation
 
 def test():
     print("[INFO][test::test]")

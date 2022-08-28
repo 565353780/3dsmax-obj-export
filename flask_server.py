@@ -8,9 +8,9 @@ from flask import Flask, request
 import sys
 sys.path.append("D:/github/3dsmax-obj-export/")
 
-from Config.path import TMP_SAVE_FOLDER_PATH
+from max_obj_export.Config.path import TMP_SAVE_FOLDER_PATH
 
-from Method.signal import sendDataIn, getDataOut
+from max_obj_export.Method.signal import sendDataIn, getDataOut
 
 def demo():
     port = 9365

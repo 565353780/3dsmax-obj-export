@@ -3,7 +3,7 @@
 
 from pymxs import runtime as rt
 
-from Method.obj_filter import getObject
+from max_obj_export.Method.obj_filter import getObject
 
 def moveObject(object_info, move_vector):
     obj = getObject(object_info)

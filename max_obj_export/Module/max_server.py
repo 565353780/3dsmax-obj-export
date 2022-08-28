@@ -3,14 +3,14 @@
 
 import os
 
-from Config.path import TMP_SAVE_FOLDER_PATH
+from max_obj_export.Config.path import TMP_SAVE_FOLDER_PATH
 
-from Method.path import removeIfExist
-from Method.signal import getDataIn, sendDataOut
-from Method.encode import getBase64Data, saveData
-from Method.load import loadMaxFile
-from Method.pose import setObjectPos, setObjectScale, setObjectRotation
-from Method.export import exportAll, transMaxToObj
+from max_obj_export.Method.path import removeIfExist
+from max_obj_export.Method.signal import getDataIn, sendDataOut
+from max_obj_export.Method.encode import getBase64Data, saveData
+from max_obj_export.Method.load import loadMaxFile
+from max_obj_export.Method.pose import setObjectPos, setObjectScale, setObjectRotation
+from max_obj_export.Method.export import exportAll, transMaxToObj
 
 class MaxServer(object):
     def __init__(self):

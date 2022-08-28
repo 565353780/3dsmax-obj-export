@@ -4,7 +4,7 @@
 import json
 import requests
 
-from Method.encode import getBase64Data, saveData
+from max_obj_export.Method.encode import getBase64Data, saveData
 
 class MaxClient(object):
     def __init__(self, server_ip, server_port):

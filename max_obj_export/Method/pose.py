@@ -4,7 +4,7 @@
 from scipy.spatial.transform import Rotation as R
 from pymxs import runtime as rt
 
-from Method.obj_filter import getObject
+from max_obj_export.Method.obj_filter import getObject
 
 def getQuatFromAngle(angle_list, axis='zxy'):
     quat = R.from_euler(axis, angle_list, degrees=True).as_quat()

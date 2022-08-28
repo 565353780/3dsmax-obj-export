@@ -4,7 +4,7 @@
 import os
 from base64 import b64encode, b64decode
 
-from Method.path import createFileFolder
+from max_obj_export.Method.path import createFileFolder
 
 def getBase64Data(file_path):
     if not os.path.exists(file_path):

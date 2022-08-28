@@ -3,7 +3,7 @@
 
 from pymxs import runtime as rt
 
-from Method.obj_filter import getNames, getObject
+from max_obj_export.Method.obj_filter import getNames, getObject
 
 def outputMaxFilePath():
     print("[INFO][output::outputMaxFilePath]")

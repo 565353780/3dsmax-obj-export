@@ -4,9 +4,9 @@
 import os
 import json
 
-from Config.path import TMP_SAVE_FOLDER_PATH
+from max_obj_export.Config.path import TMP_SAVE_FOLDER_PATH
 
-from Method.path import removeIfExist, createFileFolder
+from max_obj_export.Method.path import removeIfExist, createFileFolder
 
 def getStartSignal(signal):
     return signal + ".txt"

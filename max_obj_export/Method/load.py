@@ -4,7 +4,7 @@
 import os
 from pymxs import runtime as rt
 
-from Config.max import NO_PROMPT
+from max_obj_export.Config.max import NO_PROMPT
 
 def loadMaxFile(max_file_path):
     if not os.path.exists(max_file_path):

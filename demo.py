@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from Module.max_client import MaxClient
+from max_obj_export.Module.max_client import MaxClient
 
 if __name__ == "__main__":
     server_ip = "192.168.2.16"

@@ -4,7 +4,7 @@
 import sys
 sys.path.append("D:/github/3dsmax-obj-export/")
 
-from Method.test import test
+from max_obj_export.Method.test import test
 
 def demo():
     test()
