@@ -6,11 +6,11 @@ import json
 from flask import Flask, request
 
 import sys
-sys.path.append("D:/github/3dsmax-obj-export/")
+sys.path.append("D:/github/method-manage/")
 
-from max_obj_export.Config.path import TMP_SAVE_FOLDER_PATH
+from method_manage.Config.path import TMP_SAVE_FOLDER_PATH
 
-from max_obj_export.Method.signal import sendDataIn, getDataOut
+from method_manage.Method.signal import sendDataIn, getDataOut
 
 def demo():
     port = 9365

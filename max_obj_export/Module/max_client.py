@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
+sys.path.append("../method-manage/")
+
 import json
 import requests
 
-from max_obj_export.Method.encode import getBase64Data, saveData
+from method_manage.Method.encode import getBase64Data, saveData
 
 class MaxClient(object):
     def __init__(self, server_ip, server_port):
