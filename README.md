@@ -25,8 +25,10 @@ F11 (Script Listener)
 Scripting->Run Script-> select server.py
 ```
 
+run flask server
+
 ```bash
-."C:/Program Files/Autodesk/3ds Max 2023/Python/python.exe" flask_server.py
+python flask_server.py
 ```
 
 ## Run Client
