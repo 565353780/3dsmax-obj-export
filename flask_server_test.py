@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
+sys.path.append("../method-manage/")
+
 import os
 from flask import Flask
-
-import sys
-sys.path.append("D:/github/method-manage/")
 
 from method_manage.Config.path import TMP_SAVE_FOLDER_PATH
 
