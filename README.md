@@ -1,5 +1,13 @@
 # 3ds Max Obj Export
 
+## Clone
+
+```bash
+git clone https://github.com/565353780/3dsmax-obj-export.git
+git clone https://github.com/565353780/method-manage.git
+cd 3dsmax-obj-export
+```
+
 ## Install
 
 ```bash
@@ -24,7 +32,15 @@ Scripting->Run Script-> select server.py
 ## Run Client
 
 ```bash
-python demo.py
+python client.py
+```
+
+## Usage
+
+look at
+
+```bash
+demo.py
 ```
 
 ## Enjoy it~
