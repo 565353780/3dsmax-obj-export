@@ -6,7 +6,7 @@ import json
 from flask import Flask, request
 
 import sys
-sys.path.append("D:/github/method-manage/")
+sys.path.append("../method-manage/")
 
 from method_manage.Config.path import TMP_SAVE_FOLDER_PATH
 
