@@ -4,7 +4,7 @@
 from pymxs import runtime as rt
 
 EXPORT = {
-    #  'max': rt.MaxExp,
+    'max': rt.MaxExp,
     'obj': rt.ObjExp,
 }
 
