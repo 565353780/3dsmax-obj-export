@@ -120,7 +120,7 @@ class MaxServer(object):
 
         save_obj_file_path = TMP_SAVE_FOLDER_PATH + obj_file_basename + ".obj"
         if not transMaxToObj(max_file_path, save_obj_file_path):
-            print("[ERROR][MaxServer]")
+            print("[ERROR][MaxServer::transMaxToObj]")
             print("\t transMaxToObj failed!")
             return False
 
