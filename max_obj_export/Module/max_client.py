@@ -31,7 +31,7 @@ class MaxClient(object):
     def transMaxToObj(self, max_file_path, save_obj_file_path):
         max_data = getBase64Data(max_file_path)
         if max_data is None:
-            print("[ERROR][MaxClient::getPostResult]")
+            print("[ERROR][MaxClient::transMaxToObj]")
             print("\t getBase64Data failed!")
             return None
 
