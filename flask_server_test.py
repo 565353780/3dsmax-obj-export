@@ -1,13 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys
-sys.path.append("../method-manage/")
-
 import os
 from flask import Flask
 
-from method_manage.Config.path import TMP_SAVE_FOLDER_PATH
+from max_obj_export.Config.path import TMP_SAVE_FOLDER_PATH
 
 def demo():
     port = 9365

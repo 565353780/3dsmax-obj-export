@@ -1,16 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys
-sys.path.append("../method-manage/")
-
 import os
 
-from method_manage.Config.path import TMP_SAVE_FOLDER_PATH
+from max_obj_export.Config.path import TMP_SAVE_FOLDER_PATH
 
-from method_manage.Method.path import removeIfExist
-from method_manage.Method.signal import getDataIn, sendDataOut
-from method_manage.Method.encode import getBase64Data, saveData
+from max_obj_export.Method.path import removeIfExist
+from max_obj_export.Method.signal import getDataIn, sendDataOut
+from max_obj_export.Method.encode import getBase64Data, saveData
 
 from max_obj_export.Method.load import loadMaxFile
 from max_obj_export.Method.pose import setObjectPos, setObjectScale, setObjectRotation
